@@ -1,7 +1,15 @@
 import type { TodoItemAggregate } from '@react-node-monorepo/domain';
-import type { EntityCRUDRepo, EntityListRepo, Filter, FilterListParameters } from '../type';
+import type {
+  EntityCRUDRepo,
+  EntityListRepo,
+  Filter,
+  FilterListParameters,
+  OperationResultAsync,
+} from '../type';
 
-export type TodoItemAggregateRepositoryCRUD = EntityCRUDRepo<TodoItemAggregate>;
+export interface TodoItemAggregateRepositoryCRUD extends EntityCRUDRepo<TodoItemAggregate> {
+  removeAll(): OperationResultAsync<void>;
+}
 
 export interface TodoItemAggregateRepositoryListFilterParameters extends FilterListParameters {
   isDone: boolean;

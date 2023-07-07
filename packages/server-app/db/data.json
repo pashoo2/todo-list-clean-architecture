@@ -16,7 +16,36 @@
       "email": "admin@mail.com",
       "dateCreated": "2023-07-06T04:18:16.268Z",
       "dateModified": "2023-07-06T04:18:16.268Z",
-      "password": "$2b$10$v3VQOKVzeFOLPybLIrRReuE1om7EHzx4noSyHqBmFteEivIvGx0BG"
+      "password": "$2b$10$xIUbdsTjmLONj08wAGK0IOPhx2cjZ5.ZtqVYjo9O0SPIh5nhU06oa"
+    }
+  ],
+  "/todoitem": [
+    {
+      "id": "5b5e462d-6640-4f57-97f9-d61fc2656ce0",
+      "type": "TodoItem",
+      "description": "TODO1",
+      "isDone": true,
+      "user": "64cc142c-301e-4eaa-9b2a-c0cf83fceb3f",
+      "dateCreated": "2023-07-08T08:04:12.344Z",
+      "dateModified": "2023-07-08T08:04:13.559Z"
+    },
+    {
+      "id": "84b6f35e-d655-47e3-b17f-5ba6a05e086a",
+      "type": "TodoItem",
+      "description": "TODO1",
+      "isDone": false,
+      "user": "64cc142c-301e-4eaa-9b2a-c0cf83fceb3f",
+      "dateCreated": "2023-07-08T08:04:37.755Z",
+      "dateModified": "2023-07-08T08:05:15.379Z"
+    },
+    {
+      "id": "e4c9352c-b51f-4aae-bdf7-77327cee99ce",
+      "type": "TodoItem",
+      "description": "new",
+      "isDone": true,
+      "user": "64cc142c-301e-4eaa-9b2a-c0cf83fceb3f",
+      "dateCreated": "2023-07-08T08:04:51.034Z",
+      "dateModified": "2023-07-08T08:04:52.558Z"
     }
   ]
 }

@@ -7,3 +7,4 @@ node_modules
 /logs
 *.log
 *.tsbuildinfo
+/packages/server-app/db/sessions

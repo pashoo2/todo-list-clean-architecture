@@ -20,7 +20,7 @@ export const ElLabel = (props: ElLabelProps) => {
             placeholder={placeholder}
             disabled={isDisabled}
         >
-            {children}
+            {isLarge ? <b>{children}</b> : children}
         </Label>
     );
 }

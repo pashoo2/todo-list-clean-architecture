@@ -7,7 +7,6 @@ import { AdminRoutes } from "./admin"
 
 export const AppRoutes = observer(() => {
     const userRole = appState.user.userRole
-    debugger
     if (userRole === AppUserRole.CUSTOMER) {
         return <CustomerRoutes />
     }

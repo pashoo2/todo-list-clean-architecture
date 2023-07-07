@@ -13,9 +13,7 @@ export abstract class EndpointPrivateAbstractImpl<R>
   }
 
   public abstract readonly roles: Readonly<UserRole[]>;
-  public handle(request: Request): Promise<R> {
-    super.handle(request);
-
+  protected _handle(request: Request): Promise<R> {
     const sessionOrUndefined = this._userSession;
     if (
       !sessionOrUndefined ||
@@ -27,7 +25,7 @@ export abstract class EndpointPrivateAbstractImpl<R>
       // doesn't work as expected
       // throw new HttpErrorNoAccessImpl('Access is not permitted');
     }
-    return this._handle(request);
+    return this._handlePrivate(request);
   }
-  protected abstract _handle(request: Request): Promise<R>;
+  protected abstract _handlePrivate(request: Request): Promise<R>;
 }

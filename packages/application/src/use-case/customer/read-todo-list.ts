@@ -9,18 +9,18 @@ import type {
 } from '../../repository';
 import type { UseCase } from '../types';
 
-export type CustomerEntityUseCaseReadTodoListDoneImplResult = Promise<
+export type CustomerEntityUseCaseReadTodoListImplResult = Promise<
   ListFromStorage<TodoItemAggregate> | Error
 >;
 
-export type CustomerEntityUseCaseReadTodoListDoneImplResultParameters =
+export type CustomerEntityUseCaseReadTodoListImplResultParameters =
   Partial<TodoItemAggregateRepositoryListFilterParameters>;
 
-export class CustomerEntityUseCaseReadTodoListDoneImpl
+export class CustomerEntityUseCaseReadTodoListImpl
   implements
     UseCase<
-      CustomerEntityUseCaseReadTodoListDoneImplResultParameters,
-      CustomerEntityUseCaseReadTodoListDoneImplResult
+      CustomerEntityUseCaseReadTodoListImplResultParameters,
+      CustomerEntityUseCaseReadTodoListImplResult
     >
 {
   constructor(
@@ -29,12 +29,14 @@ export class CustomerEntityUseCaseReadTodoListDoneImpl
   ) {}
 
   public async run(
-    parameters: CustomerEntityUseCaseReadTodoListDoneImplResultParameters,
-  ): CustomerEntityUseCaseReadTodoListDoneImplResult {
-    const { count, offset } = parameters;
+    parameters: CustomerEntityUseCaseReadTodoListImplResultParameters,
+  ): CustomerEntityUseCaseReadTodoListImplResult {
+    const { count, offset, description, isDone } = parameters;
     this._todoItemAggregateListRepoFilter.create({
       count,
       offset,
+      description,
+      isDone,
     });
     const result: OperationResult<ListFromStorage<TodoItemAggregate>> =
       await this._todoItemAggregateListRepo.read(this._todoItemAggregateListRepoFilter);

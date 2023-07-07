@@ -61,12 +61,22 @@ function addPublicEndpoint(
   applicationMethod(path, (req: Request, res: Response, next) => {
     handlerBound(req)
       .then((bodyPayload: unknown) => {
-        res.status(HttpSuccessStatusCode.Default).json(bodyPayload).end();
+        if (res.headersSent) {
+          return next();
+        }
+        res.status(HttpSuccessStatusCode.Default);
+        res.json(bodyPayload);
+        res.send();
+        next();
       })
       .catch((err: Error | HttpError) => {
+        if (res.headersSent) {
+          return next();
+        }
         const statusCode = deriveErrorResponseStatusCodeByErrorObject(err);
         logger.error(`Endpoint failed:${path}:"${statusCode}"::${err.message}`);
         res.status(statusCode).send(err.message).end();
+        next(err);
       })
       .finally(next);
   });
@@ -84,7 +94,7 @@ function errorHandler(
     return next(err);
   }
   res.status(deriveErrorResponseStatusCodeByErrorObject(err));
-  res.end({ error: err });
+  res.send({ error: err });
 }
 
 export async function runApplication(port: number): Promise<Application> {

@@ -1,6 +1,5 @@
 import {
     DTOCustomerEntityToEntityImpl,
-    DTOCustomerEntityFromEntityImpl,
     type OperationResult,
     type CustomerEntityRepositoryList,
     CustomerEntityRepositoryListFilter,

@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { Link } from "react-router-dom"
 
 import { PageLogInViewModel } from './view-model'
-import { ElPane, ElButton, ElSpinner, ElError, ElInput, ElInputWithLabel, ElLabel, NavigateTo } from "../../../components"
+import { ElPane, ElButton, ElSpinner, ElInput, ElInputWithLabel, ElLabel, NavigateTo, ElErrors } from "../../../components"
 import { PUBLIC_ROUTES_PATHS, getRoutePath } from "../../../routes"
 
 const ID_GROUP_EMAIL = "page_login_email"
@@ -29,11 +29,7 @@ export const PageLogInView = observer(() => {
                     label={<ElLabel>Password</ElLabel>}
                 />
                 <ElButton onClick={viewModel.submit}>Log In</ElButton>
-                {viewModel.isError ? <>{
-                    viewModel.errors.map(error => {
-                        return <ElError key={error.message} error={error} />
-                    })
-                }</> : null}
+                <ElErrors errors={viewModel.errors} />
             </ElPane>
         </>
     )

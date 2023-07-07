@@ -43,25 +43,24 @@ export class EndpointCustomerEntityReadById
     super();
   }
 
-  protected async _handle(request: Request): Promise<CustomerRestAPIResponseReadByIdPayload> {
-    const { id } = request.body as CustomerRestAPIRequestReadByIdPayload;
+  protected async _handlePrivate(
+    request: Request,
+  ): Promise<CustomerRestAPIResponseReadByIdPayload> {
+    const { id } = request.query as CustomerRestAPIRequestReadByIdPayload;
 
     assert(typeof id === 'string', 'Id should be a string');
 
     const customerReadResult = await this._customerEntityRepositoryCRUDImpl.read(id);
-
     if (!customerReadResult.isSuccess) {
       throw customerReadResult.result;
     }
 
     const customerEntityOrUndefined: CustomerEntity | undefined = customerReadResult.result;
-
     if (!customerEntityOrUndefined) {
       return {
         customer: undefined,
       };
     }
-
     const customerEntityDTO: DTOCustomerEntity =
       this._dtoCustomerEntityFromEntityImpl.derive(customerEntityOrUndefined);
     return {

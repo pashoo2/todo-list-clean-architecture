@@ -15,8 +15,8 @@ import {
   OperationResultByHttpError,
   RestAPIRequestDescriptionCustomerSignUp,
   RestAPIRequestDescriptionUserLogIn,
-  UserRestAPIRequestLogInPayload,
-  UserRestAPIResponseLogInPayload,
+  type UserRestAPIRequestLogInPayload,
+  type UserRestAPIResponseLogInPayload,
   RestAPIRequestDescriptionCustomerReadById,
   CustomerRestAPIResponseReadByIdPayload,
 } from "@react-node-monorepo/infrastructure";
@@ -26,8 +26,11 @@ export class CustomerEntityRepositoryCRUDImpl implements CustomerEntityRepositor
   // TODO: use Dependency Injection
   protected _dtoCustomerEntityToEntityImpl = new DTOCustomerEntityToEntityImpl();
   protected _dtoCustomerEntityFromEntityImpl = new DTOCustomerEntityFromEntityImpl();
+  // TODO: implement cache
   protected _cache: Record<CustomerEntity['id'], CustomerEntity> = {}
-
+  // TODO: implement async queue
+  protected _userReadQueue: Record<CustomerEntity['id'], Promise<unknown>> = {}
+  
   constructor(
     protected _restAPIService: RestAPIService,
   ) {}
@@ -85,6 +88,21 @@ export class CustomerEntityRepositoryCRUDImpl implements CustomerEntityRepositor
   }
 
   public async read(id: string): Promise<OperationResult<CustomerEntity | undefined>> {
+    const activeRead = this._userReadQueue[id]
+    if (activeRead) {
+      await activeRead;
+    }
+
+    try {
+      const newRead = this._readUserById(id);
+      this._userReadQueue[id] = newRead
+      return await newRead;
+    } finally {
+      this._userReadQueue[id] = undefined
+    }
+  }
+
+  protected async _readUserById(id: string): Promise<OperationResult<CustomerEntity | undefined>> {
     const customerEntityOrUndefined: CustomerEntity | undefined = this._readFromCache(id);
 
     if (customerEntityOrUndefined) {

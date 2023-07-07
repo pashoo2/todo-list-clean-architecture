@@ -15,7 +15,6 @@ export const AdminPageCustomerListView = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    debugger
     return <>
         <Link to={getRoutePath(ADMIN_ROUTES_PATHS, 'root')}>Go back</Link>
         <hr />

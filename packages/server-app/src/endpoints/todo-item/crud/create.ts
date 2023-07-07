@@ -1,10 +1,10 @@
 import {
   RestAPIRequestMethod,
-  REST_API_ENDPOINT_CUSTOMER_ROOT_PATH_V1_READ_BY_ID,
-  REST_API_ENDPOINT_CUSTOMER_READ_BY_ID_METHOD,
   TodoItemAggregateRestAPIRequestCreatePayload,
   TodoItemAggregateRestAPIResponseCreatePayload,
   HTTPErrorClientSideImpl,
+  REST_API_ENDPOINT_TODO_ITEM_ROOT_PATH_V1_CREATE,
+  REST_API_ENDPOINT_TODO_ITEM_CREATE_METHOD,
 } from '@react-node-monorepo/infrastructure';
 import {
   TodoItemAggregateRepositoryCRUD,
@@ -12,6 +12,7 @@ import {
   CustomerEntityUseCaseAddTodoItemImpl,
   DTOTodoItemToAggregateImpl,
   DTOTodoItemFromAggregateImpl,
+  DTOTodoItemAggregate,
 } from '@react-node-monorepo/application';
 import { type Request } from 'express';
 import { EntityType, type TodoItemAggregate } from '@react-node-monorepo/domain';
@@ -28,10 +29,10 @@ export class EndpointTodoItemAggregateCreate
     return false;
   }
   public get path(): string {
-    return REST_API_ENDPOINT_CUSTOMER_ROOT_PATH_V1_READ_BY_ID;
+    return REST_API_ENDPOINT_TODO_ITEM_ROOT_PATH_V1_CREATE;
   }
   public get method(): RestAPIRequestMethod {
-    return REST_API_ENDPOINT_CUSTOMER_READ_BY_ID_METHOD;
+    return REST_API_ENDPOINT_TODO_ITEM_CREATE_METHOD;
   }
   public get roles(): Readonly<UserRole[]> {
     return Object.freeze([EntityType.Customer]);
@@ -46,7 +47,7 @@ export class EndpointTodoItemAggregateCreate
     super();
   }
 
-  protected async _handle(
+  protected async _handlePrivate(
     request: Request,
   ): Promise<TodoItemAggregateRestAPIResponseCreatePayload> {
     const { todoItem } = request.body as TodoItemAggregateRestAPIRequestCreatePayload;
@@ -73,9 +74,10 @@ export class EndpointTodoItemAggregateCreate
     const todoItemAggregateCreated: TodoItemAggregate = await useCase.run({
       todoItem: todoItemAggregate,
     });
-
+    const todoItemDTO: DTOTodoItemAggregate =
+      this._dtoTodoItemFromAggregateImpl.derive(todoItemAggregateCreated);
     return {
-      todoItem: this._dtoTodoItemFromAggregateImpl.derive(todoItemAggregateCreated),
+      todoItem: todoItemDTO,
     };
   }
 }

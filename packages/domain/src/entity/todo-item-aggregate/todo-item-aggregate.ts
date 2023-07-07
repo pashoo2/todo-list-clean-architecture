@@ -12,10 +12,30 @@ export interface TodoItemAggregateImplConstructorParameters
   isDone: boolean;
 }
 
+export type TodoItemAggregateListener = (todoItemAggregate: TodoItemAggregate) => void;
+
 export class TodoItemAggregateImpl
   extends EntityAbstract<EntityType.TodoItem>
   implements TodoItemAggregate
 {
+  static _listenersStatusChange = new Set<TodoItemAggregateListener>();
+  // TODO: it should be a domain event
+  static subscribeTodoItemStatusChange(listener: TodoItemAggregateListener): void {
+    this._listenersStatusChange.add(listener);
+  }
+  static unSubscribeTodoItemStatusChange(listener: TodoItemAggregateListener): void {
+    this._listenersStatusChange.delete(listener);
+  }
+
+  static _listenerNewItem = new Set<TodoItemAggregateListener>();
+  // TODO: it should be a domain event
+  static subscribeNewTodoItem(listener: TodoItemAggregateListener): void {
+    this._listenerNewItem.add(listener);
+  }
+  static unSubscribeNewTodoItem(listener: TodoItemAggregateListener): void {
+    this._listenerNewItem.delete(listener);
+  }
+
   public get type(): EntityType.TodoItem {
     return EntityType.TodoItem;
   }
@@ -23,7 +43,7 @@ export class TodoItemAggregateImpl
     return this._description;
   }
   public get isDone(): boolean {
-    return this.isDone;
+    return this._isDone;
   }
   public get user(): CustomerEntity {
     return this._user;
@@ -43,17 +63,42 @@ export class TodoItemAggregateImpl
     this._isDone = isDone;
     this._user = user;
     this._description = description;
+
+    TodoItemAggregateImpl._listenerNewItem.forEach(this.$callListenerWithCurrentInstance);
   }
 
-  public setIsDone(isDone: boolean): void {
-    this._isDone = isDone;
+  public setIsDone(): void {
+    const prevIsDoneStatus = this._isDone;
+    if (prevIsDoneStatus) {
+      return;
+    }
+    this._isDone = true;
+    this._notifyIdDoneStatusChangeListeners();
   }
 
   public unsetIsDone(): void {
+    const prevIsDoneStatus = this._isDone;
+    if (!prevIsDoneStatus) {
+      return;
+    }
     this._isDone = false;
+    this._notifyIdDoneStatusChangeListeners();
   }
 
   public setDescription(description: TodoItemDescriptionVO): void {
     this._description = description;
   }
+
+  protected _notifyIdDoneStatusChangeListeners(): void {
+    TodoItemAggregateImpl._listenersStatusChange.forEach(this.$callListenerWithCurrentInstance);
+  }
+
+  private $callListenerWithCurrentInstance = (listener: TodoItemAggregateListener): void => {
+    try {
+      listener(this);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
 }

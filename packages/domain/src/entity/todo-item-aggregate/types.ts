@@ -10,7 +10,7 @@ export interface TodoItemAggregateData extends EntityData<EntityType.TodoItem> {
 }
 
 export interface TodoItemAggregate extends Entity<EntityType.TodoItem>, TodoItemAggregateData {
-  setIsDone(isDone: boolean): void;
+  setIsDone(): void;
   unsetIsDone(): void;
   setDescription(description: TodoItemDescriptionVO): void;
 }

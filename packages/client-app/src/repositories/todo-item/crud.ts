@@ -1,7 +1,13 @@
 import { DTOTodoItemAggregate, OperationResult, OperationResultAsync, type TodoItemAggregateRepositoryCRUD } from "@react-node-monorepo/application";
 import { type RestAPIService } from "../../services";
 import { DTOTodoItemFromAggregateImpl, DTOTodoItemToAggregateImpl, CustomerEntityRepositoryCRUD } from '@react-node-monorepo/application';
-import { RestAPIRequestDescriptionTodoItemAggregateCreate, TodoItemAggregateRestAPIResponseCreatePayload } from '@react-node-monorepo/infrastructure';
+import { 
+    RestAPIRequestDescriptionTodoItemAggregateCreate, 
+    TodoItemAggregateRestAPIResponseCreatePayload,
+    RestAPIRequestDescriptionTodoItemAggregateUpdate,
+    TodoItemAggregateRestAPIResponseUpdatePayload,
+    RestAPIRequestDescriptionTodoItemAggregateRemoveAll
+ } from '@react-node-monorepo/infrastructure';
 import { type CustomerEntity, type TodoItemAggregate } from "@react-node-monorepo/domain";
 
 export class TodoItemAggregateRepositoryCRUDImpl implements TodoItemAggregateRepositoryCRUD {
@@ -41,10 +47,29 @@ export class TodoItemAggregateRepositoryCRUDImpl implements TodoItemAggregateRep
     public read(_id: string): OperationResultAsync<TodoItemAggregate | undefined> {
         throw new Error('Not implemented'); // TODO: write an implementation
     }
-    public update(_entity: TodoItemAggregate): OperationResultAsync<void> {
-        throw new Error('Not implemented'); // TODO: write an implementation
+    public async update(entity: TodoItemAggregate): Promise<OperationResult<void>> {
+        const todoItemAggregateDTO: DTOTodoItemAggregate = this._dtoTodoItemFromAggregateImpl.derive(entity);
+        const request = new RestAPIRequestDescriptionTodoItemAggregateUpdate({
+            todoItem: todoItemAggregateDTO,
+        })
+
+        await this._restAPIService.sendRequest(request) as TodoItemAggregateRestAPIResponseUpdatePayload;
+        return {
+            isSuccess: true,
+            result: void undefined,
+        };
     }
     public delete(_id: string): OperationResultAsync<void> {
         throw new Error('Not implemented'); // TODO: write an implementation
+    }
+    
+    public async removeAll(): Promise<OperationResult<void>> {
+        const request = new RestAPIRequestDescriptionTodoItemAggregateRemoveAll();
+
+        await this._restAPIService.sendRequest(request) as TodoItemAggregateRestAPIResponseUpdatePayload;
+        return {
+            isSuccess: true,
+            result: void undefined,
+        };
     }
 }

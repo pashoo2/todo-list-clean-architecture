@@ -45,7 +45,9 @@ export class EndpointPrivateCustomerList
     this._customerEntityRepositoryListFilter = new CustomerEntityRepositoryListFilterImpl();
   }
 
-  protected async _handle(request: Request): Promise<CustomerEntityRestAPIResponseListPayload> {
+  protected async _handlePrivate(
+    request: Request,
+  ): Promise<CustomerEntityRestAPIResponseListPayload> {
     const parameters = request.query as unknown as CustomerEntityRestAPIRequestListPayload;
     const useCase = new AdminEntityUseCaseReadCustomerListImpl(
       this._customerEntityRepositoryListImpl,

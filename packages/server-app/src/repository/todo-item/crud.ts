@@ -81,6 +81,14 @@ export class TodoItemAggregateRepositoryCRUDImpl implements TodoItemAggregateRep
     throw new Error('Not implemented'); // TODO: implement.
   }
 
+  public async removeAll(): OperationResultAsync<void> {
+    this._databaseConnection.set(TodoItemAggregateRepositoryCRUDImpl.dbKey, []);
+    return {
+      isSuccess: true,
+      result: void undefined,
+    };
+  }
+
   protected _readAllTodoItems(): DTOTodoItemAggregate[] {
     const todoItems = this._databaseConnection.get(TodoItemAggregateRepositoryCRUDImpl.dbKey) as
       | DTOTodoItemAggregate[]

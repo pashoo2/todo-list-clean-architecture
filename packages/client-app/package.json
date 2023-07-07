@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "react-visibility-sensor": "^5.1.1",
     "@blueprintjs/core": "^5.0.1",
     "@blueprintjs/docs-theme": "^5.0.1",
     "@babel/core": "^7.16.0",

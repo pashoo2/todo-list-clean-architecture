@@ -21,8 +21,8 @@ export class ToDoItemDescriptionVOImpl
     if (!description) {
       throw new Error('The task description should not be empty');
     }
-    if (description.length < 5) {
-      throw new Error('The task description should be at least 5 characters long');
+    if (description.length < 1) {
+      throw new Error('The task description should be at least a character long');
     }
     this._hash = this._joinHashParts(this.type, description.toLowerCase());
   }

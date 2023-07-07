@@ -7,3 +7,5 @@ export * from './services';
 export * from './configuration';
 
 export * from './repositories';
+
+export * from './utility';

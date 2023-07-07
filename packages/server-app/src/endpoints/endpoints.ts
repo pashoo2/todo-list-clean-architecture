@@ -1,3 +1,5 @@
+import { type TodoItemAggregateRepositoryList } from '@react-node-monorepo/application';
+
 import { CustomerEntityRepositoryCRUDImpl, CustomerEntityRepositoryListImpl } from '../repository';
 import { type Endpoint } from './types';
 import { EndpointCustomerEntityReadById } from './customer';
@@ -7,7 +9,13 @@ import { EndpointPrivateCustomerList } from './admin';
 import { EndpointPublicUserEntityLogOut } from './user';
 import { AdminEntityRepositoryCRUDImpl } from '../repository/admin';
 import { EndpointTodoItemAggregateCreate } from './todo-item/crud/create';
-import { TodoItemAggregateRepositoryCRUDImpl } from '../repository/todo-item';
+import {
+  TodoItemAggregateRepositoryCRUDImpl,
+  TodoItemAggregateRepositoryListImpl,
+} from '../repository/todo-item';
+import { EndpointPrivateReadTodoItemList } from './todo-item/read-todo-item-list';
+import { EndpointTodoItemAggregateUpdate } from './todo-item/crud/update';
+import { EndpointTodoItemAggregateRemoveAll } from './todo-item/crud/remove-all';
 
 // TODO: create endpoints in a respective place
 export async function createEndpoints(
@@ -26,6 +34,8 @@ export async function createEndpoints(
     databaseConnection,
     entityUniqueIdGenerator,
   );
+  const todoItemAggregateRepositoryListImpl: TodoItemAggregateRepositoryList =
+    new TodoItemAggregateRepositoryListImpl(databaseConnection, repositoryCRUDCustomer);
 
   const endpointPublicCustomerEntitySignUp = new EndpointCustomerEntityReadById(
     repositoryCRUDCustomer,
@@ -45,6 +55,16 @@ export async function createEndpoints(
     todoItemAggregateRepositoryCRUDImpl,
     repositoryCRUDCustomer,
   );
+  const endpointTodoItemAggregateUpdate = new EndpointTodoItemAggregateUpdate(
+    todoItemAggregateRepositoryCRUDImpl,
+    repositoryCRUDCustomer,
+  );
+  const endpointPrivateCustomerReadTodoItemList = new EndpointPrivateReadTodoItemList(
+    todoItemAggregateRepositoryListImpl,
+  );
+  const endpointTodoItemAggregateRemoveAll = new EndpointTodoItemAggregateRemoveAll(
+    todoItemAggregateRepositoryCRUDImpl,
+  );
 
   return [
     endpointPublicCustomerEntityLogOut,
@@ -53,5 +73,8 @@ export async function createEndpoints(
     endpointPrivateCustomerList,
     endpointCustomerEntityReadById,
     endpointTodoItemAggregateCreate,
+    endpointTodoItemAggregateUpdate,
+    endpointPrivateCustomerReadTodoItemList,
+    endpointTodoItemAggregateRemoveAll,
   ];
 }

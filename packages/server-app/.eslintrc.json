@@ -1,0 +1,16 @@
+{
+  "env": {
+    "browser": false,
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "project": "./tsconfig.json"
+  },
+  "extends": ["../../.eslintrc.json"],
+  "rules": {
+    "import/prefer-default-export": "off",
+    "no-underscore-dangle": "off"
+  }
+}

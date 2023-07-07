@@ -1,0 +1,22 @@
+{
+  "/users": [
+    {
+      "id": "64cc142c-301e-4eaa-9b2a-c0cf83fceb3f",
+      "type": "Customer",
+      "name": "name1",
+      "email": "name1@mail.com",
+      "dateCreated": "2023-07-06T04:05:22.993Z",
+      "dateModified": "2023-07-06T04:05:22.993Z",
+      "password": "$2b$10$xIUbdsTjmLONj08wAGK0IOPhx2cjZ5.ZtqVYjo9O0SPIh5nhU06oa"
+    },
+    {
+      "id": "31611c6c-ede9-4bb4-88a9-7465b6f68d58",
+      "type": "Admin",
+      "name": "admin",
+      "email": "admin@mail.com",
+      "dateCreated": "2023-07-06T04:18:16.268Z",
+      "dateModified": "2023-07-06T04:18:16.268Z",
+      "password": "$2b$10$v3VQOKVzeFOLPybLIrRReuE1om7EHzx4noSyHqBmFteEivIvGx0BG"
+    }
+  ]
+}

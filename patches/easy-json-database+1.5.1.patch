@@ -1,0 +1,24 @@
+diff --git a/node_modules/easy-json-database/index.d.ts b/node_modules/easy-json-database/index.d.ts
+index a3d8789..5210029 100644
+--- a/node_modules/easy-json-database/index.d.ts
++++ b/node_modules/easy-json-database/index.d.ts
+@@ -4,16 +4,16 @@ declare module 'easy-json-database' {
+         enabled: boolean;
+         path?: string;
+         interval?: number;
+-    };
++    }
+ 
+     interface DatabaseOptions {
+         snapshots?: SnapshotsOptions;
+-    };
++    }
+ 
+     interface DatabaseElement {
+         key: string;
+         data: unknown;
+-    };
++    }
+ 
+     export default class EasyJsonDB {
+         constructor (filePath?: string, options?: DatabaseOptions);

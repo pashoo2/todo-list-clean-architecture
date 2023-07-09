@@ -15,16 +15,20 @@
   "scripts": {
     "postinstall": "yarn patches:apply && lerna bootstrap",
     "build": "lerna run build",
+    "build:client": "yarn build -- --ignore \"server-*\"",
+    "build:server": "lerna run build --ignore \"client-*\"",
     "start": "lerna run start --parallel",
-    "start:common": "yarn start -- --ignore \"client-*\" --ignore \"server-*\" --ignore \"data-*\"",
+    "start:common": "yarn start -- --ignore \"client-*\" --ignore \"server-*\"",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
     "clean:node_modules": "npx rimraf --glob **/node_modules",
-    "clean:ts:cache": "npx rimraf --glob **/*.tsbuildinfo",
+    "clean:build:ts-cache": "npx rimraf --glob **/*.tsbuildinfo",
+    "clean:build:cache": "yarn clean:build:ts-cache && yarn clean:node_modules",
     "clean:build": "lerna run clean:build",
-    "clean": "yarn clean:node_modules && yarn clean:build && clean:ts:cache",
+    "clean": "yarn clean:build && yarn clean:build:cache",
     "patches:create": "patch-package --",
-    "patches:apply": "patch-package"
+    "patches:apply": "patch-package",
+    "run:server": "lerna run start:nodemon --scope=server-app"
   },
   "husky": {
     "hooks": {
